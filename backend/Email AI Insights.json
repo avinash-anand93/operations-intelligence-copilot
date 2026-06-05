@@ -1,0 +1,98 @@
+{
+  "name": "Email AI Insights",
+  "nodes": [
+    {
+      "parameters": {
+        "sendTo": "={{$node[\"Webhook\"].json.body.recipients.join(\",\")}}",
+        "subject": "={{$node[\"Webhook\"].json.body.email_subject || \"AI Incident Insights Report\"}}",
+        "message": "=<div style=\"font-family:Arial,sans-serif;max-width:800px;margin:auto;\">\n  <h1>AI Incident Insights Report</h1>\n\n  <h2>Executive Summary</h2>\n  <p>{{ $node[\"Webhook\"].json.body.insight_text.summary }}</p>\n\n  <h2>Risk Analysis</h2>\n <p>{{ $node[\"Webhook\"].json.body.insight_text.risk_analysis }}</p>\n\n  <h2>Trend Insights</h2>\n  <p>{{ $node[\"Webhook\"].json.body.insight_text.trend_insights }}</p>\n\n  <h2>Recommendations</h2>\n  <p>{{ $node[\"Webhook\"].json.body.insight_text.recommendations }}</p>\n\n  <hr>\n\n  <small>Generated automatically by AI Insights</small>\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "4eb3213b-c985-489f-ba2f-9d72344ae6c3",
+      "name": "Send a message",
+      "webhookId": "9c1a0de0-974e-40a0-a5b2-b31c6a1a93a7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "iAeZdzDC5EO7fgKY",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "send-insights",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "30e788c6-b071-4571-b431-498855206d3f",
+      "name": "Webhook",
+      "webhookId": "9e85feee-06cc-4ed7-89ff-b1991793c09c"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Email sent successfully\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        480,
+        0
+      ],
+      "id": "36fb756e-8c4f-4aed-8dbe-3c5b61178037",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f0b26ba7-9107-432f-9396-40a46e3664de",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b9e5247c44d06b84cd62b4308ac24dc72096a0274ba27a01e75550a7606c7923"
+  },
+  "nodeGroups": [],
+  "id": "iIUibSagwH27YVjv",
+  "tags": []
+}
