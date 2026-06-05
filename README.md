@@ -10,6 +10,7 @@ https://cogent-ops-view.lovable.app
 
 ## Repository Structure
 
+```text
 operations-intelligence-copilot
 │
 ├── frontend/
@@ -20,6 +21,7 @@ operations-intelligence-copilot
 │   └── Backend documentation
 │
 └── README.md
+```
 
 ## Technology Stack
 
